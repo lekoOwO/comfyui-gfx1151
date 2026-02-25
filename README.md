@@ -1,18 +1,25 @@
 # ComfyUI for gfx1151 (Ryzen AI MAX)
 
 Dockerized ComfyUI with PyTorch & flash-attention for gfx1151 (AMD Strix Halo, Ryzen AI Max+ 395),
-relying on AMD's pre-built and pre-configured environment (no custom wheels)
+relying on AMD's pre-built and pre-configured environment (no custom wheels).
 
-**Last updated & tested**: Dec 31, 2025, on 6.18.2 (ArchLinux), AMD RYZEN AI MAX+ 395 (Framework Desktop), 
-with [opencl-amd](https://aur.archlinux.org/packages/opencl-amd) packages.
+Versions used:
+* ROCm: 7.2
+* PyTorch: 2.9.1
+* Python: 3.12
+* ComfyUI (built-in): v0.15.0
+
+**Last updated & tested**: Feb 25, 2026, on 6.18.9 (ArchLinux), AMD RYZEN AI MAX+ 395 (Framework Desktop), 
+with [opencl-amd](https://aur.archlinux.org/packages/opencl-amd) packages (7.2.0-1).
 
 > [!CAUTION]
 > I kinda understand what's going on here, but not fully. It took me most of the day to figure out how to run
 > ComfyUI on my Framework Desktop without it crashing (which is absurd for a CPU with _AI_ in the name), and
 > the final working solution turned out to be much simpler than what I was able to find initially.
 >
-> That being said, it works (as of Dec 31, 2025), but I'm not sure if there's an even better / more correct way of
-> achieving the same thing. Same goes for the environment variables that are supposedly making ComfyUI faster / resource efficient.
+> That being said, it works (as of Feb 25, 2026), but I'm not sure if there's an even better / more correct way of
+> achieving the same thing. Same goes for the environment variables that are supposedly making ComfyUI
+> faster / resource efficient.
 >
 > I just want to share this solution to save someone else a couple of hours ¯\_(ツ)_/¯
 
@@ -24,9 +31,13 @@ so you can, but don't have to build it yourself.
 There are two options:
 
 * Copy [docker-compose.yml](docker-compose.yml) and run `docker compose up -d`
-* Copy [docker-run.sh](docker-run.sh) and run `./docker-run.sh`
+* Copy [docker-run.sh](docker-run.sh) and run `./docker-run.sh`. After the first run, use `docker start comfyui-gfx1151`.
 
 ComfyUI will be available at http://localhost:8188.
+
+The starter templates should generate images without any issues.
+
+Once you've verified that it works, feel free to use this repository as the foundation for your own setup or workflow.
 
 #### Parameters
 
@@ -44,10 +55,23 @@ Both options have the same pre-configured parameters, which are:
 
 There are a couple of scripts that can check that both PyTorch and flash-attention work, you can find them below.
 
+#### Updating ComfyUI / dependencies
+
+If you need to install custom nodes or refresh ComfyUI dependencies after a manual update,
+you can do it from within the container (until #4 is resolved):
+
+```bash
+docker exec -it comfyui-gfx1151 /bin/bash
+
+cd /opt/ComfyUI
+
+pip install -r requirements.txt
+```
+
 ## What's inside / how to replicate
 
 This image is based on AMD's [rocm/pytorch](https://hub.docker.com/r/rocm/pytorch) image that has Ubuntu 24.04, 
-ROCm 7.1.1, Python 3.12 and PyTorch 2.9.1, in which everything is configured to work together and it just works.
+ROCm 7.2, Python 3.12 and PyTorch 2.9.1, in which everything is configured to work together and it just works.
 You can find out more about this image in 
 [AMD's ROCm documentation](https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/install/installryz/native_linux/install-pytorch.html#use-docker-image-with-pre-installed-pytorch).
 

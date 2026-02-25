@@ -13,4 +13,4 @@ docker run -it \
   -v $(pwd)/ComfyUI:/opt/ComfyUI \
   --shm-size 8G \
   --name comfyui-gfx1151 \
-  ignatberesnev/comfyui-gfx1151:v0.1
+  ignatberesnev/comfyui-gfx1151:v0.2
