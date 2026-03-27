@@ -1,4 +1,4 @@
-FROM rocm/pytorch:rocm7.2_ubuntu24.04_py3.12_pytorch_release_2.9.1
+FROM docker.io/rocm/pytorch:rocm7.2_ubuntu24.04_py3.12_pytorch_release_2.9.1
 
 # "Installing" flash-attention
 # - Not sure if branch `main_perf` is actually better,
